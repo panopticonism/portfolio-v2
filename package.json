@@ -20,7 +20,7 @@
     "classnames": "^2.3.2",
     "contentful": "^11.5.11",
     "next": "^16.2.6",
-    "posthog-js": "^1.373.5",
+    "posthog-js": "^1.396.4",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "shiki": "^1.29.2"
