@@ -35,3 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 .env
+
+# local tooling
+.claude/
+AGENTS.md

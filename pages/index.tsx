@@ -1,35 +1,36 @@
-import type { GetServerSideProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import React, { useRef } from "react";
-import { Header, Socials, Footer, ProjectsCTA } from "components";
+import Header from "components/Header/Header";
+import Socials from "components/Socials/Socials";
+import Footer from "components/Footer/Footer";
+import ProjectsCTA from "components/ProjectsCTA/ProjectsCTA";
 import { Introduction, Steps, Posts, Tech } from "components/homepage";
-import { useThemeContext } from "contexts/theme-context";
-import { FetchDataProps } from "types/App.types";
-import { client } from "./api/lib/Contentful";
 import { ThemeSwitch } from "components/ThemeSwitch/ThemeSwitch";
-import { notionClient } from "./api/lib/Notion";
-import { highlightNotionBlocks } from "lib/highlightCode";
+import Seo from "components/Seo/Seo";
+import { getProjects, type Project } from "lib/contentful";
+import { getFrontpageBlocks, type FrontpageCodeBlock } from "lib/notion";
 
-const Home: NextPage<FetchDataProps> = ({
-  projects,
-  skills,
-  frontpageBlocks,
-}) => {
-  const { theme } = useThemeContext();
+type HomeProps = {
+  projects: Project[];
+  frontpageBlocks: FrontpageCodeBlock[];
+};
 
-  const projectsRef = useRef<any>(null);
+const Home: NextPage<HomeProps> = ({ projects, frontpageBlocks }) => {
+  const projectsRef = useRef<HTMLElement>(null);
   function handleBackClick() {
-    projectsRef?.current.scrollIntoView({ behavior: "smooth" });
+    projectsRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
   return (
-    <div className={`common theme-${theme}`}>
+    <div className="common">
+      <Seo path="/" />
       <Header />
       <main>
         <Socials />
         <Introduction blocks={frontpageBlocks} />
         <Steps />
-        <Tech skills={skills} />
-        <Posts ref={projectsRef} projects={projects.items} />
+        <Tech />
+        <Posts ref={projectsRef} projects={projects} />
         <ProjectsCTA onClick={handleBackClick} />
       </main>
       <Footer />
@@ -38,25 +39,17 @@ const Home: NextPage<FetchDataProps> = ({
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const pageId = process.env.NOTION_FRONTPAGE_ID || "";
-
-  const blocks = await notionClient.blocks.children.list({
-    block_id: pageId,
-  });
-  const frontpageBlocks = await highlightNotionBlocks(blocks.results);
-
-  const projects = await client.getEntries({
-    content_type: "project",
-    order: "fields.id",
-  });
-  const skills = await client.getEntries({
-    content_type: "toolshed",
-    order: "fields.id",
-  });
+// Built statically and refreshed in the background at most once a minute, so
+// visitors get a cached page instead of waiting on Notion and Contentful.
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  const [frontpageBlocks, projects] = await Promise.all([
+    getFrontpageBlocks(),
+    getProjects(),
+  ]);
 
   return {
-    props: { projects, skills, frontpageBlocks },
+    props: { projects, frontpageBlocks },
+    revalidate: 60,
   };
 };
 

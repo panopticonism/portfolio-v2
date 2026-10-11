@@ -2,7 +2,7 @@ import styles from "./Header.module.css";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import useScreenSize from "hooks/useScreenSize";
-import { Logo } from "public/icons/Logo";
+import { Logo } from "components/icons/Logo";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);

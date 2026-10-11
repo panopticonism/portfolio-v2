@@ -1,4 +1,4 @@
-import { Logo } from "public/icons/Logo";
+import { Logo } from "components/icons/Logo";
 import styles from "./Footer.module.css";
 import { useForm, ValidationError } from "@formspree/react";
 
@@ -25,7 +25,7 @@ const Footer = () => {
           <form className={styles.form} onSubmit={handleSubmit}>
             <fieldset>
               <div>
-                <label htmlFor="full-name">Full name</label>
+                <label htmlFor="full-name">Full name<span className={styles.required} aria-hidden="true"> *</span></label>
                 <input id="full-name" type="text" name="name" required />
                 <ValidationError
                   prefix="name"
@@ -34,7 +34,7 @@ const Footer = () => {
                 />
               </div>
               <div>
-                <label htmlFor="company">Company&apos;s name</label>
+                <label htmlFor="company">Company&apos;s name<span className={styles.required} aria-hidden="true"> *</span></label>
                 <input id="company" type="text" name="company" required />
                 <ValidationError
                   prefix="company"
@@ -45,7 +45,7 @@ const Footer = () => {
             </fieldset>
             <fieldset>
               <div>
-                <label htmlFor="email">Email address</label>
+                <label htmlFor="email">Email address<span className={styles.required} aria-hidden="true"> *</span></label>
                 <input id="email" type="email" name="email" required />
                 <ValidationError
                   prefix="Email"
@@ -55,15 +55,15 @@ const Footer = () => {
               </div>
               <div>
                 <label htmlFor="phone">Phone number</label>
-                <input id="phone" type="tel" name="phone" required />
+                <input id="phone" type="tel" name="phone" />
                 <ValidationError
-                  prefix="Tel"
-                  field="tel"
+                  prefix="Phone"
+                  field="phone"
                   errors={state.errors}
                 />
               </div>
             </fieldset>
-            <label htmlFor="message">Message</label>
+            <label htmlFor="message">Message<span className={styles.required} aria-hidden="true"> *</span></label>
             <textarea id="message" name="message" rows={4} cols={50} required />
             <ValidationError
               prefix="Message"

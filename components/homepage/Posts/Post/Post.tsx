@@ -1,28 +1,22 @@
 import styles from "../Posts.module.css";
-import { ArticleProps } from "../Posts.types";
 import { faArrowUpRightFromSquare } from "@fortawesome/free-solid-svg-icons";
 import { faBehance, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Project } from "lib/contentful";
+import { contentfulImage, contentfulSrcSet } from "lib/images";
 
-const Post = ({ article }: ArticleProps) => {
+const Post = ({ project }: { project: Project }) => {
   const {
     title,
     description,
-    image,
-    category,
+    imageUrl,
+    categories,
     behance,
     github,
     livePreview,
     tools,
-  } = article?.fields;
-
-  const categories = category
-    ? `${category}`
-        .split(",")
-        .map((c) => c.trim())
-        .filter((c) => c && c.toLowerCase() !== "all")
-    : [];
+  } = project;
 
   const hasSources = behance || github || livePreview;
 
@@ -70,12 +64,16 @@ const Post = ({ article }: ArticleProps) => {
           </ul>
         </div>
       )}
-      {image && (
+      {imageUrl && (
         <div className={styles.image_wrapper}>
           <img
             className={styles.bgImage}
-            src={image?.fields?.file?.url}
+            src={contentfulImage(imageUrl, 800)}
+            srcSet={contentfulSrcSet(imageUrl, [400, 800, 1200])}
+            sizes="(min-width: 900px) 420px, calc(100vw - 64px)"
             alt={title}
+            loading="lazy"
+            decoding="async"
           />
         </div>
       )}
@@ -86,19 +84,21 @@ const Post = ({ article }: ArticleProps) => {
         <h2>{title}</h2>
         {description ? <p className={styles.description}>{description}</p> : null}
 
-        {tools ? (
+        {tools.length > 0 ? (
           <div className={styles.tools}>
             <ul>
-              {tools.map(({ fields }) => (
-                <li key={fields.id}>
-                  {fields?.icon?.fields?.file?.url && (
+              {tools.map((tool) => (
+                <li key={tool.id}>
+                  {tool.iconUrl && (
                     <img
-                      src={fields.icon.fields.file.url}
+                      src={contentfulImage(tool.iconUrl, 32)}
                       alt=""
                       aria-hidden="true"
+                      loading="lazy"
+                      decoding="async"
                     />
                   )}
-                  <p>{fields.title}</p>
+                  <p>{tool.title}</p>
                 </li>
               ))}
             </ul>

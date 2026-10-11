@@ -19,7 +19,41 @@
   animation: float 10s var(--easing-standard) infinite;
 }
 
+.text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+}
+
+/* Overrides the global section-heading style: the name reads as one line,
+   not a word per line, and has no underlined first letter. */
+.text .name {
+  max-width: none;
+  margin: var(--space-5) 0 var(--space-3);
+  font-weight: 400;
+  font-size: 52px;
+  line-height: 1.2;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.text .name::first-letter {
+  text-decoration: none;
+}
+
+.pitch {
+  margin: 0 0 var(--space-5);
+  font-size: 17px;
+  color: var(--text-colour-muted);
+}
+
 .code_stack {
+  width: 100%;
+  text-align: left;
   position: relative;
   z-index: 1;
   display: flex;
@@ -61,5 +95,15 @@
 
   .portrait {
     max-width: 500px;
+  }
+
+  .text {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .text .name {
+    margin-top: 0;
+    font-size: 72px;
   }
 }
