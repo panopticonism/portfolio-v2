@@ -1,12 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
-import React, { useState, useEffect, useRef } from "react";
-import {
-  Header,
-  Socials,
-  Footer,
-  ProjectsCTA,
-  LoadingScreen,
-} from "components";
+import React, { useRef } from "react";
+import { Header, Socials, Footer, ProjectsCTA } from "components";
 import { Introduction, Steps, Posts, Tech } from "components/homepage";
 import { useThemeContext } from "contexts/theme-context";
 import { FetchDataProps } from "types/App.types";
@@ -20,14 +14,7 @@ const Home: NextPage<FetchDataProps> = ({
   skills,
   frontpageBlocks,
 }) => {
-  const [isLoading, setLoading] = useState(true);
   const { theme } = useThemeContext();
-
-  useEffect(() => {
-    if (projects && skills) {
-      setLoading(false);
-    }
-  }, [skills, projects]);
 
   const projectsRef = useRef<any>(null);
   function handleBackClick() {
@@ -36,23 +23,17 @@ const Home: NextPage<FetchDataProps> = ({
 
   return (
     <div className={`common theme-${theme}`}>
-      {isLoading ? (
-        <LoadingScreen />
-      ) : (
-        <>
-          <Header />
-          <main>
-            <Socials />
-            <Introduction blocks={frontpageBlocks} />
-            <Steps />
-            <Tech skills={skills} />
-            <Posts ref={projectsRef} projects={projects.items} />
-            <ProjectsCTA onClick={handleBackClick} />
-          </main>
-          <Footer />
-          <ThemeSwitch />
-        </>
-      )}
+      <Header />
+      <main>
+        <Socials />
+        <Introduction blocks={frontpageBlocks} />
+        <Steps />
+        <Tech skills={skills} />
+        <Posts ref={projectsRef} projects={projects.items} />
+        <ProjectsCTA onClick={handleBackClick} />
+      </main>
+      <Footer />
+      <ThemeSwitch />
     </div>
   );
 };
