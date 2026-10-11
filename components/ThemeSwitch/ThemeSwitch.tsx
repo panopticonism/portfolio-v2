@@ -3,24 +3,18 @@ import { useThemeContext } from 'contexts/theme-context';
 import styles from "./ThemeSwitch.module.css";
 
 export const ThemeSwitch = () => {
-    const [isChecked, setIsChecked] = React.useState(true);
     const { theme, setTheme } = useThemeContext();
-
-    const changeThemeMode = () => {
-        setIsChecked(!isChecked);
-        const isCurrentDark = theme === 'dark';
-        setTheme(isCurrentDark ? 'light' : 'dark');
-    }
+    const isDark = theme === 'dark';
 
     return (
         <label className={styles.switch}>
-            <span className={styles.srOnly}>Toggle dark mode</span>
+            <span className={styles.srOnly}>Dark mode</span>
             <input
                 type="checkbox"
                 role="switch"
-                aria-label="Toggle dark mode"
-                onClick={changeThemeMode}
-                defaultChecked={isChecked}
+                aria-label="Dark mode"
+                checked={isDark}
+                onChange={() => setTheme(isDark ? 'light' : 'dark')}
             />
             <span className={`${styles.slider} ${styles.round}`} aria-hidden="true"></span>
         </label>

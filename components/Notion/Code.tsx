@@ -28,13 +28,18 @@ export const Code = ({
   return (
     <div className={styles.code}>
       {allowCopy ? (
-        <div className={styles.copyBtn} onClick={handleCopy}>
+        <button
+          type="button"
+          className={styles.copyBtn}
+          onClick={handleCopy}
+          aria-label={copied ? "Copied" : "Copy code"}
+        >
           {copied ? (
             <FontAwesomeIcon icon={faSquareCheck} color="green" />
           ) : (
             <FontAwesomeIcon icon={faClone} color="white" />
           )}
-        </div>
+        </button>
       ) : null}
       {html ? (
         <div

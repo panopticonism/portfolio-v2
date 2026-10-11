@@ -20,6 +20,9 @@
 
   .projects_breadcumbs .pointer {
     position: relative;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    padding-top: 1em;
   }
 
   .projects_breadcumbs .pointer::after {

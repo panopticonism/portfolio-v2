@@ -1,16 +1,16 @@
 import styles from "./Posts.module.css";
 import Post from "./Post/Post";
 import { forwardRef } from "react";
-import { ArticleFieldsProps } from "./Posts.types";
+import type { Project } from "lib/contentful";
 
-const Posts = forwardRef<HTMLInputElement, { projects: ArticleFieldsProps[] }>(
+const Posts = forwardRef<HTMLElement, { projects: Project[] }>(
   ({ projects }, ref) => {
     return (
       <section id="projects" className={styles.projects} ref={ref}>
         <h1>Portfolio</h1>
         <div className={styles.portfolio}>
-          {projects?.map((article: any) => (
-            <Post article={article} key={article?.sys?.id} />
+          {projects.map((project) => (
+            <Post project={project} key={project.id} />
           ))}
         </div>
       </section>

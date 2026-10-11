@@ -1,4 +1,4 @@
-import { icons } from "public/icons";
+import { icons } from "components/icons";
 import styles from "./Socials.module.css";
 
 const Socials = ({ isBlog, url }: { isBlog?: boolean, url?: string }) => {

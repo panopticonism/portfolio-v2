@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import React from 'react';
 import styles from "./Entries.module.css";
-import { ColorsProps, PostProps } from './Entries.types';
+import type { PostSummary } from 'lib/posts';
 
-const colors: ColorsProps = {
+const colors: Record<string, string> = {
     "JavaScript": "#c2b13f",
     "TypeScript": "#007acc",
     "React": "#57c4e1",
@@ -16,17 +16,23 @@ const colors: ColorsProps = {
     "Jest": "#944059"
 }
 
-export const Entries = ({ posts }: { posts: PostProps }) => {
+export const Entries = ({ posts }: { posts: PostSummary[] }) => {
     return (
         <main className={styles.entries}>
-            {posts.map((entry) =>
-                <article key={entry.id}>
-                    <span className={styles.icon}>{entry.icon.type === "emoji" ? entry.icon.emoji : <img src={entry.icon.file.url} alt="icon" width={30} height={30} />}</span>
-                    <h2>{entry.properties.Name.title[0].plain_text}</h2>
-                    {entry.properties.Tags.multi_select && <ul>{entry.properties.Tags.multi_select.map((tag) =>
+            {posts.map((post) =>
+                <article key={post.id}>
+                    {post.icon && (
+                        <span className={styles.icon}>
+                            {post.icon.type === "emoji"
+                                ? post.icon.emoji
+                                : <img src={post.icon.url} alt="" width={30} height={30} />}
+                        </span>
+                    )}
+                    <h2>{post.title}</h2>
+                    {post.tags.length > 0 && <ul>{post.tags.map((tag) =>
                         <li key={tag.id} style={{ background: colors[tag.name] }}>{tag.name}</li>)}</ul>}
-                    <p>{entry.properties.Summary.rich_text[0]?.plain_text}</p>
-                    <Link href={`/blog/${entry.id}`}>
+                    <p>{post.summary}</p>
+                    <Link href={`/blog/${post.slug}`}>
                         <div className={styles.learn_more}>
                             <div className={styles.projects_button}>
                                 <span>Read article →</span>

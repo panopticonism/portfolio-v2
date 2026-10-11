@@ -93,7 +93,7 @@ export const renderBlock = (block: any) => {
     case "bookmark":
       const href = value.url;
       return (
-        <a href={href} target="_brank" className={styles.bookmark}>
+        <a href={href} target="_blank" rel="noreferrer" className={styles.bookmark}>
           {href}
         </a>
       );
